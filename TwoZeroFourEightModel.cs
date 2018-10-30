@@ -11,13 +11,47 @@ namespace twozerofoureight
         protected int boardSize; // default is 4
         protected int[,] board;
         protected Random rand;
-
         public TwoZeroFourEightModel() : this(4)
         {
             // default board size is 4 
         }
 
-        public TwoZeroFourEightModel(int size)
+		public bool IsDuplicate(int[,] board)
+		{
+			int duplicateNumber = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					if (board[i, j] == board[i + 1, j]) duplicateNumber++;
+				}
+			}
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					if (board[i, j] == board[i, j + 1]) duplicateNumber++;
+				}
+			}
+			if (duplicateNumber == 0) return false;
+			return true;
+		}
+
+		public bool FullBoard(int[,] board)
+		{
+			int count = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					if (board[i, j] != 0) count++;
+				}
+			}
+			if (count == 16) return true;
+			return false;
+		}
+
+		public TwoZeroFourEightModel(int size)
         {
             boardSize = size;
             board = new int[boardSize, boardSize];
@@ -39,16 +73,20 @@ namespace twozerofoureight
 
         private int[,] Random(int[,] input)
         {
-            while (true)
-            {
-                int x = rand.Next(boardSize);
-                int y = rand.Next(boardSize);
-                if (board[x, y] == 0)
-                {
-                    board[x, y] = 2;
-                    break;
-                }
-            }
+			while (true)
+			{
+				int x = rand.Next(boardSize);
+				int y = rand.Next(boardSize);
+				if (board[x, y] == 0)
+				{
+					board[x, y] = 2;
+					break;
+				}
+				if (FullBoard(board))
+				{
+					break;
+				}
+			}
             return input;
         }
 

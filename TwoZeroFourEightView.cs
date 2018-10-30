@@ -47,13 +47,22 @@ namespace twozerofoureight
                     l.BackColor = Color.DarkGray;
                     break;
                 case 4:
-                    l.BackColor = Color.Orange;
+                    l.BackColor = Color.NavajoWhite;
                     break;
                 case 8:
-                    l.BackColor = Color.Red;
+                    l.BackColor = Color.Orange;
                     break;
-                default:
-                    l.BackColor = Color.Green;
+				case 16:
+					l.BackColor = Color.OrangeRed;
+					break;
+				case 32:
+					l.BackColor = Color.IndianRed;
+					break;
+				case 64:
+					l.BackColor = Color.PaleVioletRed;
+					break;
+				default:
+                    l.BackColor = Color.Violet;
                     break;
             }
         }
@@ -75,7 +84,20 @@ namespace twozerofoureight
             UpdateTile(lbl31,board[3, 1]);
             UpdateTile(lbl32,board[3, 2]);
             UpdateTile(lbl33,board[3, 3]);
-        }
+			int sum = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					sum += board[i, j];
+				}
+			}
+			label2.Text = sum.ToString();
+			if ((((TwoZeroFourEightModel)model).FullBoard(board)) && !(((TwoZeroFourEightModel)model).IsDuplicate(board)))
+			{
+				MessageBox.Show("GameOver!!!");
+			}
+		}
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
@@ -97,5 +119,24 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+		private void Window_KeyDown(object sender, KeyEventArgs e)
+		{
+			string keystr = e.KeyCode.ToString();
+			switch (e.KeyCode)
+			{
+				case Keys.Right:
+					controller.ActionPerformed(TwoZeroFourEightController.RIGHT);
+					break;
+				case Keys.Left:
+					controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+					break;
+				case Keys.Up:
+					controller.ActionPerformed(TwoZeroFourEightController.UP);
+					break;
+				case Keys.Down:
+					controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+					break;
+			}
+		}
     }
 }
